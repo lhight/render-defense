@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Render Defense — Security Dashboard</title>
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rdred: '#8B1A1A',
+            rddark: '#0a0a0a',
+            rdpanel: '#111111',
+            rdcard: '#1a1a1a',
+            rdborder: '#2a2a2a'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .score-ring { 
+      background: conic-gradient(#22c55e 0deg, #22c55e calc(3.6deg * 78), #2a2a2a calc(3.6deg * 78), #2a2a2a 360deg);
+    }
+    .threat-pulse { animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  </style>
+</head>
+<body class="bg-rddark text-white font-sans antialiased min-h-screen">
+
+<!-- NAV -->
+<header class="bg-rdpanel border-b border-rdborder sticky top-0 z-50">
+  <div class="max-w-[1600px] mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img src="assets/icon.png" alt="Render Defense" class="h-8" />
+      <span class="text-xl font-bold tracking-tight"><span class="text-rdred">RENDER</span>DEFENSE</span>
+      <span class="text-white/30 ml-2">|</span>
+      <span class="text-white/50 text-sm ml-2">Security Dashboard</span>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-2 text-sm text-white/60">
+        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+        <span>All Systems Operational</span>
+      </div>
+      <div class="text-sm text-white/40">Last updated: <span class="text-white/60 font-mono">2 min ago</span></div>
+      <div class="w-8 h-8 bg-rdred rounded-full flex items-center justify-center text-sm font-bold">AC</div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1600px] mx-auto px-6 py-6">
+
+  <!-- TOP ROW: Key Metrics -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    
+    <!-- Risk Score -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white/60 text-sm font-medium">Risk Exposure Score</h3>
+        <span class="text-xs text-green-500 bg-green-500/10 px-2 py-1 rounded">↑ 3 pts</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <div class="relative w-24 h-24">
+          <div class="score-ring w-24 h-24 rounded-full flex items-center justify-center">
+            <div class="w-20 h-20 bg-rdpanel rounded-full flex items-center justify-center">
+              <span class="text-3xl font-bold text-green-500">78</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-lg font-semibold text-green-500">Good</div>
+          <div class="text-sm text-white/50">Above industry avg</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white/60 text-sm font-medium">Endpoint Status</h3>
+        <span class="text-xs text-white/40">47 total</span>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-green-500">44</div>
+          <div class="text-xs text-white/50">Protected</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-yellow-500">2</div>
+          <div class="text-xs text-white/50">Warning</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-red-500">1</div>
+          <div class="text-xs text-white/50">At Risk</div>
+        </div>
+      </div>
+      <div class="mt-4 h-2 bg-rdborder rounded-full overflow-hidden flex">
+        <div class="bg-green-500 h-full" style="width: 93.6%"></div>
+        <div class="bg-yellow-500 h-full" style="width: 4.3%"></div>
+        <div class="bg-red-500 h-full" style="width: 2.1%"></div>
+      </div>
+    </div>
+
+    <!-- Patching -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white/60 text-sm font-medium">Patching Radar</h3>
+        <span class="text-xs text-green-500 bg-green-500/10 px-2 py-1 rounded">98% current</span>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-white/70">OS Patches</span>
+          <span class="text-sm font-mono text-green-500">46/47</span>
+        </div>
+        <div class="h-1.5 bg-rdborder rounded-full overflow-hidden">
+          <div class="bg-green-500 h-full rounded-full" style="width: 98%"></div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-white/70">App Patches</span>
+          <span class="text-sm font-mono text-green-500">45/47</span>
+        </div>
+        <div class="h-1.5 bg-rdborder rounded-full overflow-hidden">
+          <div class="bg-green-500 h-full rounded-full" style="width: 96%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Threats Blocked -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white/60 text-sm font-medium">Threats Blocked (30d)</h3>
+        <div class="w-2 h-2 bg-green-500 rounded-full threat-pulse"></div>
+      </div>
+      <div class="text-4xl font-bold mb-2">1,247</div>
+      <div class="grid grid-cols-3 gap-2 text-xs">
+        <div class="bg-rdcard rounded p-2 text-center">
+          <div class="text-red-400 font-semibold">23</div>
+          <div class="text-white/40">Malware</div>
+        </div>
+        <div class="bg-rdcard rounded p-2 text-center">
+          <div class="text-orange-400 font-semibold">89</div>
+          <div class="text-white/40">Phishing</div>
+        </div>
+        <div class="bg-rdcard rounded p-2 text-center">
+          <div class="text-yellow-400 font-semibold">1,135</div>
+          <div class="text-white/40">Suspicious</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDLE ROW -->
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    
+    <!-- Threat Timeline -->
+    <div class="col-span-2 bg-rdpanel border border-rdborder rounded-xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-white/80 font-semibold">Threat Timeline</h3>
+        <div class="flex gap-2">
+          <button class="text-xs bg-rdcard border border-rdborder px-3 py-1 rounded text-white/60 hover:text-white">24h</button>
+          <button class="text-xs bg-rdred px-3 py-1 rounded text-white">7d</button>
+          <button class="text-xs bg-rdcard border border-rdborder px-3 py-1 rounded text-white/60 hover:text-white">30d</button>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-center gap-4 p-3 bg-rdcard rounded-lg border-l-4 border-red-500">
+          <div class="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium">Ransomware attempt blocked</span>
+              <span class="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded">CRITICAL</span>
+            </div>
+            <div class="text-xs text-white/50 mt-1">Endpoint: DESKTOP-MKT-04 • Quarantined: TrojanCrypt.exe</div>
+          </div>
+          <div class="text-xs text-white/40 font-mono">2h ago</div>
+        </div>
+        
+        <div class="flex items-center gap-4 p-3 bg-rdcard rounded-lg border-l-4 border-orange-500">
+          <div class="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium">Phishing email blocked</span>
+              <span class="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded">HIGH</span>
+            </div>
+            <div class="text-xs text-white/50 mt-1">User: j.martinez@company.com • Subject: "Urgent: Invoice Payment Required"</div>
+          </div>
+          <div class="text-xs text-white/40 font-mono">4h ago</div>
+        </div>
+
+        <div class="flex items-center gap-4 p-3 bg-rdcard rounded-lg border-l-4 border-yellow-500">
+          <div class="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium">Suspicious login attempt</span>
+              <span class="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded">MEDIUM</span>
+            </div>
+            <div class="text-xs text-white/50 mt-1">User: admin@company.com • Location: Lagos, Nigeria • Blocked by MFA</div>
+          </div>
+          <div class="text-xs text-white/40 font-mono">6h ago</div>
+        </div>
+
+        <div class="flex items-center gap-4 p-3 bg-rdcard rounded-lg border-l-4 border-blue-500">
+          <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium">Firewall rule updated</span>
+              <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded">INFO</span>
+            </div>
+            <div class="text-xs text-white/50 mt-1">Blocked outbound traffic to known C2 server: 185.234.xx.xx</div>
+          </div>
+          <div class="text-xs text-white/40 font-mono">8h ago</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compliance Health -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-white/80 font-semibold">Compliance Health</h3>
+        <span class="text-xs text-white/40">3 frameworks</span>
+      </div>
+      <div class="space-y-5">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium">SOC 2 Type II</span>
+            <span class="text-sm text-green-500 font-mono">87%</span>
+          </div>
+          <div class="h-2 bg-rdborder rounded-full overflow-hidden">
+            <div class="bg-green-500 h-full rounded-full" style="width: 87%"></div>
+          </div>
+          <div class="text-xs text-white/40 mt-1">12 controls remaining</div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium">HIPAA</span>
+            <span class="text-sm text-yellow-500 font-mono">64%</span>
+          </div>
+          <div class="h-2 bg-rdborder rounded-full overflow-hidden">
+            <div class="bg-yellow-500 h-full rounded-full" style="width: 64%"></div>
+          </div>
+          <div class="text-xs text-white/40 mt-1">28 controls remaining</div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium">NIST CSF</span>
+            <span class="text-sm text-green-500 font-mono">92%</span>
+          </div>
+          <div class="h-2 bg-rdborder rounded-full overflow-hidden">
+            <div class="bg-green-500 h-full rounded-full" style="width: 92%"></div>
+          </div>
+          <div class="text-xs text-white/40 mt-1">8 controls remaining</div>
+        </div>
+      </div>
+      <div class="mt-6 pt-4 border-t border-rdborder">
+        <div class="text-xs text-white/50 mb-2">Next Audit</div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium">SOC 2 Annual Review</span>
+          <span class="text-xs bg-rdcard px-2 py-1 rounded text-white/60">Mar 15, 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="grid grid-cols-4 gap-4">
+    
+    <!-- Vulnerability Summary -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <h3 class="text-white/80 font-semibold mb-4">Vulnerabilities</h3>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 bg-red-500 rounded"></div>
+            <span class="text-sm text-white/70">Critical</span>
+          </div>
+          <span class="text-lg font-bold text-red-500">0</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 bg-orange-500 rounded"></div>
+            <span class="text-sm text-white/70">High</span>
+          </div>
+          <span class="text-lg font-bold text-orange-500">3</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 bg-yellow-500 rounded"></div>
+            <span class="text-sm text-white/70">Medium</span>
+          </div>
+          <span class="text-lg font-bold text-yellow-500">12</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 bg-blue-500 rounded"></div>
+            <span class="text-sm text-white/70">Low</span>
+          </div>
+          <span class="text-lg font-bold text-blue-500">27</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MFA Status -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <h3 class="text-white/80 font-semibold mb-4">MFA Adoption</h3>
+      <div class="flex items-center justify-center mb-4">
+        <div class="relative w-28 h-28">
+          <svg class="w-28 h-28 -rotate-90">
+            <circle cx="56" cy="56" r="48" stroke="#2a2a2a" stroke-width="8" fill="none"/>
+            <circle cx="56" cy="56" r="48" stroke="#22c55e" stroke-width="8" fill="none" stroke-dasharray="301.6" stroke-dashoffset="30.16"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-2xl font-bold">90%</span>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-center text-xs">
+        <div class="bg-rdcard rounded p-2">
+          <div class="text-green-500 font-semibold">27</div>
+          <div class="text-white/40">Enabled</div>
+        </div>
+        <div class="bg-rdcard rounded p-2">
+          <div class="text-red-500 font-semibold">3</div>
+          <div class="text-white/40">Disabled</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Network Health -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <h3 class="text-white/80 font-semibold mb-4">Network Health</h3>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-white/70">Firewall</span>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-xs text-green-500">Active</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-white/70">VPN Gateway</span>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-xs text-green-500">Active</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-white/70">DNS Filtering</span>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-xs text-green-500">Active</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-white/70">IDS/IPS</span>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-xs text-green-500">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-rdpanel border border-rdborder rounded-xl p-6">
+      <h3 class="text-white/80 font-semibold mb-4">Quick Actions</h3>
+      <div class="space-y-2">
+        <button class="w-full text-left px-4 py-3 bg-rdcard hover:bg-rdborder rounded-lg text-sm transition flex items-center gap-3">
+          <svg class="w-4 h-4 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path></svg>
+          Run Full Scan
+        </button>
+        <button class="w-full text-left px-4 py-3 bg-rdcard hover:bg-rdborder rounded-lg text-sm transition flex items-center gap-3">
+          <svg class="w-4 h-4 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+          Download Report
+        </button>
+        <button class="w-full text-left px-4 py-3 bg-rdcard hover:bg-rdborder rounded-lg text-sm transition flex items-center gap-3">
+          <svg class="w-4 h-4 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
+          Configure Alerts
+        </button>
+        <button class="w-full text-left px-4 py-3 bg-rdcard hover:bg-rdborder rounded-lg text-sm transition flex items-center gap-3">
+          <svg class="w-4 h-4 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+          Get Support
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-rdborder mt-8 py-4">
+  <div class="max-w-[1600px] mx-auto px-6 flex items-center justify-between text-xs text-white/40">
+    <span>© 2026 Render Defense — Strategy | Governance | Protection</span>
+    <span>Dashboard v1.0 (Mock)</span>
+  </div>
+</footer>
+
+</body>
+</html>
