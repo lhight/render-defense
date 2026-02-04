@@ -3,392 +3,601 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Render Defense — Enterprise-Grade Security Architecture for SMBs</title>
+  <title>Render Defense — Enterprise-Grade Security Architecture | Atlanta</title>
   <meta name="description" content="Render Defense delivers managed security operations and AI governance with enterprise rigor for growing businesses. 25+ years experience. CISSP certified." />
   
-  <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon.png">
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" type="image/png" href="assets/icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             rdred: '#8B1A1A',
-            rddark: '#0D0D0D',
+            rddark: '#0A0A0A',
             rdgray: '#111111',
-            rdtext: '#F5F5F5'
+            rdlight: '#1A1A1A'
           }
         }
       }
     }
   </script>
   
-  <!-- Scroll animations -->
   <style>
     html { scroll-behavior: smooth; }
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .glass { background: rgba(17,17,17,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .glass-card { background: linear-gradient(145deg, rgba(26,26,26,0.9), rgba(17,17,17,0.95)); border: 1px solid rgba(255,255,255,0.06); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .glass-card:hover { border-color: rgba(139,26,26,0.4); transform: translateY(-6px); box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(139,26,26,0.1); }
+    .btn-primary { background: linear-gradient(135deg, #8B1A1A, #6B1414); position: relative; overflow: hidden; transition: all 0.3s ease; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,26,26,0.4); }
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .gradient-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12; pointer-events: none; }
+    .pricing-popular { border: 2px solid #8B1A1A; position: relative; }
+    .pricing-popular::before { content: 'MOST POPULAR'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #8B1A1A; color: white; font-size: 11px; font-weight: 800; padding: 5px 18px; border-radius: 20px; letter-spacing: 1px; }
+    .grid-bg { background-image: linear-gradient(rgba(139,26,26,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(139,26,26,0.03) 1px, transparent 1px); background-size: 50px 50px; }
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #8B1A1A; transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #8B1A1A; border-radius: 3px; }
   </style>
 </head>
-<body class="bg-rddark text-rdtext font-['Inter'] antialiased">
+<body class="bg-rddark text-gray-100 font-sans antialiased selection:bg-rdred selection:text-white">
 
-<!-- NAV -->
-<header class="sticky top-0 z-50 bg-rddark/95 backdrop-blur-md border-b border-white/5">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="#" class="flex items-center gap-2">
-      <img src="assets/icon.png" alt="Render Defense" class="h-10 w-auto" />
-      <span class="text-2xl font-bold tracking-tight"><span class="text-rdred">RENDER</span>DEFENSE</span>
-    </a>
-    <nav class="hidden md:flex items-center gap-8 text-sm text-white/70">
-      <a href="#services" class="hover:text-white transition">Services</a>
-      <a href="#dashboard" class="hover:text-white transition">Dashboard</a>
-      <a href="#pricing" class="hover:text-white transition">Pricing</a>
-      <a href="#about" class="hover:text-white transition">About</a>
-      <a href="#contact" class="text-white bg-rdred hover:bg-rdred/90 px-4 py-2 rounded-md font-medium transition">Get Started</a>
-    </nav>
-    <!-- Mobile menu button -->
-    <button id="mobile-menu-btn" class="md:hidden text-white">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-    </button>
+  <!-- Background Effects -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="gradient-orb w-[500px] h-[500px] bg-red-900 top-[-100px] left-[-100px]"></div>
+    <div class="gradient-orb w-[400px] h-[400px] bg-red-900 bottom-[10%] right-[-100px]"></div>
+    <div class="absolute inset-0 grid-bg opacity-50"></div>
   </div>
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 px-6 py-4 space-y-4">
-    <a href="#services" class="block text-white/70 hover:text-white">Services</a>
-    <a href="#dashboard" class="block text-white/70 hover:text-white">Dashboard</a>
-    <a href="#pricing" class="block text-white/70 hover:text-white">Pricing</a>
-    <a href="#about" class="block text-white/70 hover:text-white">About</a>
-    <a href="#contact" class="block text-white bg-rdred px-4 py-2 rounded-md font-medium text-center">Get Started</a>
-  </div>
-</header>
 
-<!-- HERO -->
-<section class="relative overflow-hidden">
-  <!-- Subtle grid background -->
-  <div class="absolute inset-0 opacity-[0.02]" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;1&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-  
-  <div class="max-w-7xl mx-auto px-6 py-28 md:py-36 relative">
-    <div class="max-w-3xl">
-      <p class="text-rdred font-semibold tracking-widest uppercase text-sm mb-4">From Chaos to Command</p>
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] mb-6">
-        Enterprise‑Grade Security.<br />
-        <span class="text-white/60">Built for Growing Business.</span>
-      </h1>
-      <p class="text-lg md:text-xl text-white/70 mb-10 max-w-2xl">
-        We bridge the gap between Fortune 500 security architecture and the reality of small‑to‑medium businesses. Protection without the overhead.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a href="#contact" class="bg-rdred hover:bg-rdred/90 px-8 py-4 rounded-md font-semibold text-center transition">Book a Strategy Call</a>
-        <a href="#services" class="border border-white/20 hover:border-white/40 px-8 py-4 rounded-md font-semibold text-center transition">Explore Services</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TRUST BAR -->
-<section class="border-y border-white/5 bg-rdgray">
-  <div class="max-w-7xl mx-auto px-6 py-8">
-    <div class="flex flex-wrap justify-center md:justify-between items-center gap-8 text-sm text-white/50">
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-        <span><strong class="text-white">CISSP</strong> Certified</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
-        <span><strong class="text-white">25+ Years</strong> Enterprise Technology</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"></path></svg>
-        <span><strong class="text-white">Higher Ed</strong> & SMB Focus</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-        <span><strong class="text-white">AI Governance</strong> Expertise</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section id="services" class="fade-in">
-  <div class="max-w-7xl mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <p class="text-rdred font-semibold tracking-widest uppercase text-sm mb-4">What We Do</p>
-      <h2 class="text-3xl md:text-4xl font-bold">Two Pillars. One Integrated Defense.</h2>
-    </div>
-    
-    <div class="grid md:grid-cols-2 gap-8">
-      <!-- Shield -->
-      <div class="bg-rdgray border border-white/5 rounded-xl p-8 hover:border-rdred/30 transition">
-        <div class="w-12 h-12 bg-rdred/10 rounded-lg flex items-center justify-center mb-6">
-          <svg class="w-6 h-6 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 glass">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 bg-rdred rounded-lg flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(139,26,26,0.5)] transition-all">
+          <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
         </div>
-        <h3 class="text-2xl font-bold mb-3">The Shield</h3>
-        <p class="text-rdred text-sm font-medium mb-4">Managed Security Operations</p>
-        <p class="text-white/60 mb-6">We run your day‑to‑day security like a modern SOC team—without you needing a modern SOC budget.</p>
-        <ul class="space-y-3 text-white/80">
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Automated OS & application patching</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Managed EDR with 24/7 behavioral monitoring</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Firewalls, VPNs, network segmentation</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Weekly executive health reports</span>
-          </li>
-        </ul>
+        <span class="text-xl font-bold tracking-tight"><span class="text-rdred">RENDER</span>DEFENSE</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#services" class="nav-link text-gray-300 hover:text-white transition">Services</a>
+        <a href="#testimonials" class="nav-link text-gray-300 hover:text-white transition">Results</a>
+        <a href="#pricing" class="nav-link text-gray-300 hover:text-white transition">Pricing</a>
+        <a href="#faq" class="nav-link text-gray-300 hover:text-white transition">FAQ</a>
+        <a href="#contact" class="btn-primary px-5 py-2.5 rounded-md font-semibold text-white hover:bg-red-800 transition">Get Started</a>
       </div>
-      
-      <!-- Blueprint -->
-      <div class="bg-rdgray border border-white/5 rounded-xl p-8 hover:border-rdred/30 transition">
-        <div class="w-12 h-12 bg-rdred/10 rounded-lg flex items-center justify-center mb-6">
-          <svg class="w-6 h-6 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"></path></svg>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center pt-24">
+    <div class="max-w-7xl mx-auto px-6 py-20 relative z-10">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-rdred/10 border border-rdred/30 rounded-full mb-8">
+          <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+          <span class="text-sm font-medium">Now accepting new Atlanta clients</span>
         </div>
-        <h3 class="text-2xl font-bold mb-3">The Blueprint</h3>
-        <p class="text-rdred text-sm font-medium mb-4">Strategy & Governance</p>
-        <p class="text-white/60 mb-6">Executive‑level security leadership without the $200k/year salary. We build the rules that protect your future.</p>
-        <ul class="space-y-3 text-white/80">
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Fractional CISO advisory</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>SOC 2, HIPAA, NIST readiness roadmaps</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>AI security & governance frameworks</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Board‑level risk reporting</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DASHBOARD -->
-<section id="dashboard" class="bg-black border-y border-white/5 fade-in">
-  <div class="max-w-7xl mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <p class="text-rdred font-semibold tracking-widest uppercase text-sm mb-4">Visibility</p>
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">The Render Defense Dashboard</h2>
-      <p class="text-white/60 max-w-2xl mx-auto">Security you can actually see. A single command center that transforms invisible protection into measurable business insight.</p>
-    </div>
-    
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="bg-rdgray border border-white/5 p-6 rounded-xl hover:border-rdred/30 transition">
-        <div class="text-3xl font-bold text-rdred mb-2">78</div>
-        <h3 class="font-semibold mb-2">Risk Exposure Score</h3>
-        <p class="text-sm text-white/60">Real‑time security posture like a credit score for your business.</p>
-      </div>
-      <div class="bg-rdgray border border-white/5 p-6 rounded-xl hover:border-rdred/30 transition">
-        <div class="text-3xl font-bold text-green-500 mb-2">100%</div>
-        <h3 class="font-semibold mb-2">Patching Radar</h3>
-        <p class="text-sm text-white/60">Visual confirmation every device in your fleet is current.</p>
-      </div>
-      <div class="bg-rdgray border border-white/5 p-6 rounded-xl hover:border-rdred/30 transition">
-        <div class="text-3xl font-bold text-white mb-2">24/7</div>
-        <h3 class="font-semibold mb-2">Threat Timeline</h3>
-        <p class="text-sm text-white/60">Transparent reporting on every block and neutralized threat.</p>
-      </div>
-      <div class="bg-rdgray border border-white/5 p-6 rounded-xl hover:border-rdred/30 transition">
-        <div class="text-3xl font-bold text-blue-400 mb-2">SOC 2</div>
-        <h3 class="font-semibold mb-2">Compliance Health</h3>
-        <p class="text-sm text-white/60">Live tracker for regulatory and audit‑readiness milestones.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing" class="fade-in">
-  <div class="max-w-7xl mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <p class="text-rdred font-semibold tracking-widest uppercase text-sm mb-4">Engagement</p>
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Flexible. Scalable. No Lock‑In.</h2>
-      <p class="text-white/60 max-w-2xl mx-auto">Choose the tier that matches your risk profile. Upgrade as you grow.</p>
-    </div>
-    
-    <div class="grid md:grid-cols-3 gap-8">
-      <!-- Foundational -->
-      <div class="bg-rdgray border border-white/5 rounded-xl p-8">
-        <h3 class="text-xl font-bold mb-2">Foundational</h3>
-        <p class="text-rdred text-sm font-medium mb-6">The Security Essentials</p>
-        <ul class="space-y-3 text-white/70 mb-8">
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Managed EDR & patching</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Weekly health reports</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Dashboard access</span>
-          </li>
-        </ul>
-        <a href="#contact" class="block text-center border border-white/20 hover:border-white/40 px-6 py-3 rounded-md font-semibold transition">Get Started</a>
-      </div>
-      
-      <!-- Professional -->
-      <div class="bg-rdgray border-2 border-rdred rounded-xl p-8 relative">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-rdred text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</div>
-        <h3 class="text-xl font-bold mb-2">Professional</h3>
-        <p class="text-rdred text-sm font-medium mb-6">The Scalable Perimeter</p>
-        <ul class="space-y-3 text-white/70 mb-8">
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Everything in Foundational</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Managed firewall & VPN</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Network vulnerability scans</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Custom security policy set</span>
-          </li>
-        </ul>
-        <a href="#contact" class="block text-center bg-rdred hover:bg-rdred/90 px-6 py-3 rounded-md font-semibold transition">Get Started</a>
-      </div>
-      
-      <!-- Strategic -->
-      <div class="bg-rdgray border border-white/5 rounded-xl p-8">
-        <h3 class="text-xl font-bold mb-2">Strategic</h3>
-        <p class="text-rdred text-sm font-medium mb-6">The Enterprise Standard</p>
-        <ul class="space-y-3 text-white/70 mb-8">
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Everything in Professional</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Fractional CISO advisory</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Audit & compliance support</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="w-5 h-5 text-rdred mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
-            <span>Board‑level risk reporting</span>
-          </li>
-        </ul>
-        <a href="#contact" class="block text-center border border-white/20 hover:border-white/40 px-6 py-3 rounded-md font-semibold transition">Get Started</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="bg-black border-y border-white/5 fade-in">
-  <div class="max-w-7xl mx-auto px-6 py-24">
-    <div class="grid md:grid-cols-2 gap-16 items-center">
-      <div>
-        <p class="text-rdred font-semibold tracking-widest uppercase text-sm mb-4">About</p>
-        <h2 class="text-3xl md:text-4xl font-bold mb-6">Built by an Architect.<br />Not a Salesperson.</h2>
-        <p class="text-white/70 mb-6">
-          Render Defense was founded by Larnel Hight, a CISSP‑certified Enterprise Architect and Information Security Architect with over 25 years in enterprise technology.
+        
+        <p class="text-rdred font-bold tracking-[0.2em] uppercase text-sm mb-6">From Chaos to Command</p>
+        <h1 class="text-5xl sm:text-6xl md:text-7xl font-black leading-[1.1] mb-8">
+          Enterprise-Grade<br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Security for SMBs</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl leading-relaxed">
+          We bridge the gap between Fortune 500 security architecture and the reality of small-to-medium businesses. Protection without the overhead. Strategy without the bureaucracy.
         </p>
-        <p class="text-white/70 mb-6">
-          After years of building security programs in higher education and resource‑constrained environments, the mission became clear: bring Fortune 500 security architecture to businesses that can't afford a full security team—but can't afford to be unprotected either.
-        </p>
-        <p class="text-white/70">
-          This isn't a vendor pushing products. It's an architect who builds what actually works.
-        </p>
-      </div>
-      <div class="flex justify-center">
-        <div class="w-64 h-64 bg-rdgray border border-white/10 rounded-full flex items-center justify-center">
-          <span class="text-6xl font-bold text-rdred">LH</span>
+        
+        <div class="flex flex-col sm:flex-row gap-4 mb-12">
+          <a href="#contact" class="btn-primary px-8 py-4 rounded-lg font-bold text-center text-white text-lg">Book Free Strategy Call</a>
+          <a href="#services" class="border border-white/20 hover:border-rdred/50 hover:bg-rdred/5 px-8 py-4 rounded-lg font-semibold text-center transition flex items-center justify-center gap-2">
+            Explore Services
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </a>
+        </div>
+        
+        <!-- Trust Badges -->
+        <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span><strong class="text-gray-300">CISSP</strong> Certified</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+            <span><strong class="text-gray-300">25+ Years</strong> Experience</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
+            <span><strong class="text-gray-300">Atlanta</strong> Based</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CONTACT -->
-<section id="contact" class="fade-in">
-  <div class="max-w-3xl mx-auto px-6 py-24">
-    <div class="text-center mb-12">
-      <p class="text-rdred font-semibold tracking-widest uppercase text-sm mb-4">Contact</p>
-      <h2 class="text-3xl md:text-4xl font-bold mb-4">Start With a Conversation</h2>
-      <p class="text-white/60">Tell us about your environment. We'll map your current posture and outline a clear path forward.</p>
+  <!-- Lead Magnet Banner -->
+  <section class="py-12 border-y border-white/5 bg-gradient-to-r from-rdred/10 via-rddark to-rdred/5">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 bg-rdred/20 rounded-xl flex items-center justify-center border border-rdred/30">
+            <svg class="w-7 h-7 text-rdred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold">Free Security Assessment Checklist</h3>
+            <p class="text-gray-400">10 critical points every business should review. Instant download.</p>
+          </div>
+        </div>
+        <button class="btn-primary px-8 py-3 rounded-lg font-semibold whitespace-nowrap">Download Now</button>
+      </div>
     </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-rdred font-bold tracking-[0.2em] uppercase text-sm mb-4">What We Do</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Two Pillars. One Integrated Defense.</h2>
+        <p class="text-gray-400 max-w-2xl mx-auto text-lg">We don't just install tools — we architect complete security programs tailored to your business reality.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Shield -->
+        <div class="glass-card rounded-2xl p-10 reveal">
+          <div class="w-16 h-16 bg-rdred/10 rounded-2xl flex items-center justify-center mb-6 border border-rdred/20">
+            <svg class="w-8 h-8 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold mb-2">The Shield</h3>
+          <p class="text-rdred font-semibold mb-4">Managed Security Operations</p>
+          <p class="text-gray-400 mb-8 leading-relaxed">We run your day-to-day security like a modern SOC team—without you needing a modern SOC budget. 24/7 protection, proactive threat hunting, and rapid incident response.</p>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">Automated OS & application patching</span></li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">Managed EDR with behavioral monitoring</span></li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">Firewalls, VPNs, network segmentation</span></li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">Weekly executive security reports</span></li>
+          </ul>
+        </div>
+        
+        <!-- Blueprint -->
+        <div class="glass-card rounded-2xl p-10 reveal">
+          <div class="w-16 h-16 bg-rdred/10 rounded-2xl flex items-center justify-center mb-6 border border-rdred/20">
+            <svg class="w-8 h-8 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold mb-2">The Blueprint</h3>
+          <p class="text-rdred font-semibold mb-4">Strategy & Governance</p>
+          <p class="text-gray-400 mb-8 leading-relaxed">Executive-level security leadership without the $200k/year salary. We build the frameworks, policies, and compliance programs that protect your future.</p>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">Fractional CISO advisory</span></li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">SOC 2, HIPAA, NIST readiness</span></li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">AI security & governance frameworks</span></li>
+            <li class="flex items-start gap-3"><svg class="w-5 h-5 text-rdred mt-1 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg><span class="text-gray-300">Board-level risk reporting</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="py-24 bg-rdgray/30 border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-rdred font-bold tracking-[0.2em] uppercase text-sm mb-4">Client Results</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Trusted by Atlanta Businesses</h2>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Art Bully Productions -->
+        <div class="glass-card rounded-2xl p-8 reveal">
+          <div class="text-5xl text-rdred/20 font-serif mb-4">"</div>
+          <p class="text-gray-300 mb-6 leading-relaxed">Render Defense transformed our security posture. We finally have enterprise-grade protection without the enterprise overhead. Larnel speaks our language—no jargon, just results.</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-rdred/20 rounded-full flex items-center justify-center text-rdred font-bold">AB</div>
+            <div>
+              <p class="font-semibold">Art Bully Productions</p>
+              <p class="text-sm text-gray-500">Creative/Media • Atlanta</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Placeholder for future client -->
+        <div class="glass-card rounded-2xl p-8 reveal border-dashed border-2 border-white/10">
+          <div class="text-5xl text-rdred/20 font-serif mb-4">"</div>
+          <p class="text-gray-400 mb-6 leading-relaxed italic">Your testimonial here. Join the growing list of Atlanta businesses that trust Render Defense with their security.</p>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gray-700/30 rounded-full flex items-center justify-center text-gray-500 font-bold">?</div>
+            <div>
+              <p class="font-semibold text-gray-400">Your Company</p>
+              <p class="text-sm text-gray-600">Be our next success story</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Stats Card -->
+        <div class="glass-card rounded-2xl p-8 reveal bg-gradient-to-br from-rdred/10 to-transparent">
+          <h3 class="text-xl font-bold mb-6">Why Atlanta Chooses Us</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-400">Response Time</span>
+              <span class="font-bold text-rdred">&lt; 1 Hour</span>
+            </div>
+            <div class="h-px bg-white/10"></div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-400">Local Presence</span>
+              <span class="font-bold text-rdred">Atlanta Based</span>
+            </div>
+            <div class="h-px bg-white/10"></div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-400">Avg. Client Size</span>
+              <span class="font-bold text-rdred">10-500 Emp</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="py-24">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-rdred font-bold tracking-[0.2em] uppercase text-sm mb-4">Investment</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Flexible. Scalable. No Lock-In.</h2>
+        <p class="text-gray-400 max-w-2xl mx-auto">Choose the tier that matches your risk profile. Upgrade as you grow. All plans include our core commitment: enterprise-grade thinking at SMB-friendly pricing.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Foundational -->
+        <div class="glass-card rounded-2xl p-8 reveal">
+          <h3 class="text-2xl font-bold mb-2">Foundational</h3>
+          <p class="text-rdred font-semibold mb-6">The Security Essentials</p>
+          <div class="mb-6">
+            <span class="text-4xl font-bold">$2,500</span>
+            <span class="text-gray-500">/month</span>
+          </div>
+          <ul class="space-y-3 mb-8 text-gray-300">
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Managed EDR & patching</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Weekly health reports</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Email support</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Up to 50 endpoints</li>
+          </ul>
+          <a href="#contact" class="block text-center border border-white/20 hover:border-rdred/60 hover:bg-rdred/5 py-3 rounded-lg font-semibold transition">Get Started</a>
+        </div>
+        
+        <!-- Professional -->
+        <div class="glass-card rounded-2xl p-8 pricing-popular reveal">
+          <h3 class="text-2xl font-bold mb-2">Professional</h3>
+          <p class="text-rdred font-semibold mb-6">The Scalable Perimeter</p>
+          <div class="mb-6">
+            <span class="text-4xl font-bold">$5,000</span>
+            <span class="text-gray-500">/month</span>
+          </div>
+          <ul class="space-y-3 mb-8 text-gray-300">
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Everything in Foundational</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Managed firewall & VPN</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Quarterly vulnerability scans</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Priority phone support</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Up to 200 endpoints</li>
+          </ul>
+          <a href="#contact" class="block text-center btn-primary py-3 rounded-lg font-semibold transition">Get Started</a>
+        </div>
+        
+        <!-- Strategic -->
+        <div class="glass-card rounded-2xl p-8 reveal">
+          <h3 class="text-2xl font-bold mb-2">Strategic</h3>
+          <p class="text-rdred font-semibold mb-6">The Enterprise Standard</p>
+          <div class="mb-6">
+            <span class="text-4xl font-bold">Custom</span>
+          </div>
+          <ul class="space-y-3 mb-8 text-gray-300">
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Everything in Professional</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Fractional CISO (20 hrs/mo)</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Full compliance program</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Board reporting & strategy</li>
+            <li class="flex items-center gap-3"><svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Unlimited endpoints</li>
+          </ul>
+          <a href="#contact" class="block text-center border border-white/20 hover:border-rdred/60 hover:bg-rdred/5 py-3 rounded-lg font-semibold transition">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-24 bg-rdgray/30 border-y border-white/5">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <p class="text-rdred font-bold tracking-[0.2em] uppercase text-sm mb-4">Common Questions</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">FAQ</h2>
+      </div>
+      
+      <div class="space-y-4">
+        <div class="glass-card rounded-xl p-6 reveal">
+          <button class="faq-question w-full flex items-center justify-between text-left" onclick="toggleFaq(this)">
+            <span class="font-semibold text-lg">What makes Render Defense different from other MSPs?</span>
+            <svg class="faq-icon w-6 h-6 text-rdred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          </button>
+          <div class="faq-answer text-gray-400 mt-0">
+            <p class="pt-4">Most MSPs offer security as an add-on to IT services. We lead with security architecture. Every recommendation is backed by CISSP-certified expertise and enterprise-grade frameworks—not vendor kickbacks or cookie-cutter solutions.</p>
+          </div>
+        </div>
+        
+        <div class="glass-card rounded-xl p-6 reveal">
+          <button class="faq-question w-full flex items-center justify-between text-left" onclick="toggleFaq(this)">
+            <span class="font-semibold text-lg">How quickly can you get us protected?</span>
+            <svg class="faq-icon w-6 h-6 text-rdred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          </button>
+          <div class="faq-answer text-gray-400 mt-0">
+            <p class="pt-4">Most clients see initial protection within 48-72 hours of engagement. We use a phased approach: immediate risk reduction first, then build toward comprehensive long-term security architecture over the following weeks.</p>
+          </div>
+        </div>
+        
+        <div class="glass-card rounded-xl p-6 reveal">
+          <button class="faq-question w-full flex items-center justify-between text-left" onclick="toggleFaq(this)">
+            <span class="font-semibold text-lg">Do you work with businesses outside Atlanta?</span>
+            <svg class="faq-icon w-6 h-6 text-rdred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          </button>
+          <div class="faq-answer text-gray-400 mt-0">
+            <p class="pt-4">Yes. While we're based in Atlanta and have deep local expertise, we serve clients nationwide. Our remote-first approach means we deliver the same enterprise-grade security regardless of your location.</p>
+          </div>
+        </div>
+        
+        <div class="glass-card rounded-xl p-6 reveal">
+          <button class="faq-question w-full flex items-center justify-between text-left" onclick="toggleFaq(this)">
+            <span class="font-semibold text-lg">What's included in the free strategy call?</span>
+            <svg class="faq-icon w-6 h-6 text-rdred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          </button>
+          <div class="faq-answer text-gray-400 mt-0">
+            <p class="pt-4">A 30-minute conversation about your current environment, risk tolerance, and business goals. You'll leave with a clear understanding of your security gaps and a roadmap for addressing them—whether or not you choose to work with us.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div class="reveal">
+          <p class="text-rdred font-bold tracking-[0.2em] uppercase text-sm mb-4">Get Started</p>
+          <h2 class="text-4xl md:text-5xl font-bold mb-6">Start With a Conversation</h2>
+          <p class="text-gray-400 text-lg mb-8 leading-relaxed">Tell us about your environment. We'll map your current posture and outline a clear path forward—no obligation, no hard sell.</p>
+          
+          <div class="space-y-6">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-rdred/10 rounded-lg flex items-center justify-center border border-rdred/20">
+                <svg class="w-6 h-6 text-rdred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Email</p>
+                <p class="font-semibold">hello@renderdefense.com</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-rdred/10 rounded-lg flex items-center justify-center border border-rdred/20">
+                <svg class="w-6 h-6 text-rdred" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">Location</p>
+                <p class="font-semibold">Atlanta, Georgia</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="glass-card rounded-2xl p-8 reveal">
+          <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-6">
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium mb-2">Name</label>
+                <input type="text" name="name" required class="w-full bg-rddark border border-white/10 focus:border-rdred rounded-lg p-4 outline-none transition" placeholder="Your name">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" name="email" required class="w-full bg-rddark border border-white/10 focus:border-rdred rounded-lg p-4 outline-none transition" placeholder="you@company.com">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Company</label>
+              <input type="text" name="company" class="w-full bg-rddark border border-white/10 focus:border-rdred rounded-lg p-4 outline-none transition" placeholder="Your company (optional)">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2">Message</label>
+              <textarea name="message" required rows="4" class="w-full bg-rddark border border-white/10 focus:border-rdred rounded-lg p-4 outline-none transition" placeholder="Tell us about your security goals and challenges..."></textarea>
+            </div>
+            <button type="submit" class="w-full btn-primary py-4 rounded-lg font-bold text-lg">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-12 bg-rdgray/20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-3">
+          <img src="assets/icon.png" alt="Render Defense" class="h-8 w-auto" />
+          <span class="text-lg font-bold"><span class="text-rdred">RENDER</span>DEFENSE</span>
+        </div>
+        <p class="text-sm text-gray-500">© 2026 Render Defense. Strategy | Governance | Protection</p>
+        <div class="flex items-center gap-6 text-sm">
+          <a href="#services" class="text-gray-400 hover:text-white transition">Services</a>
+          <a href="#pricing" class="text-gray-400 hover:text-white transition">Pricing</a>
+          <a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Scroll reveal animation
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
     
-    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-6">
-      <div class="grid sm:grid-cols-2 gap-6">
-        <input type="text" name="name" required placeholder="Your name" class="w-full bg-rdgray border border-white/10 focus:border-rdred p-4 rounded-lg outline-none transition" />
-        <input type="email" name="email" required placeholder="Your email" class="w-full bg-rdgray border border-white/10 focus:border-rdred p-4 rounded-lg outline-none transition" />
-      </div>
-      <input type="text" name="company" placeholder="Company (optional)" class="w-full bg-rdgray border border-white/10 focus:border-rdred p-4 rounded-lg outline-none transition" />
-      <textarea name="message" required placeholder="Tell us about your environment and security goals" class="w-full bg-rdgray border border-white/10 focus:border-rdred p-4 rounded-lg outline-none transition h-32"></textarea>
-      <button type="submit" class="w-full bg-rdred hover:bg-rdred/90 px-8 py-4 rounded-lg font-semibold transition">Send Message</button>
-    </form>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="border-t border-white/5 py-12">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-      <div class="flex items-center gap-2">
-        <img src="assets/icon.png" alt="Render Defense" class="h-8 w-auto" />
-        <span class="text-lg font-bold tracking-tight"><span class="text-rdred">RENDER</span>DEFENSE</span>
-      </div>
-      <div class="text-sm text-white/40">
-        © <script>document.write(new Date().getFullYear())</script> Render Defense. Strategy | Governance | Protection
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- Scripts -->
-<script>
-  // Mobile menu toggle
-  document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-    document.getElementById('mobile-menu').classList.toggle('hidden');
-  });
-  
-  // Fade-in on scroll
-  const faders = document.querySelectorAll('.fade-in');
-  const appearOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-  const appearOnScroll = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    
+    // FAQ Toggle
+    function toggleFaq(button) {
+      const item = button.parentElement;
+      const answer = button.nextElementSibling;
+      const isOpen = item.classList.contains('active');
+      
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('active');
+        i.querySelector('.faq-answer').style.maxHeight = null;
+      });
+      
+      // Open clicked if was closed
+      if (!isOpen) {
+        item.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
       }
+    }
+    
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
     });
-  }, appearOptions);
-  faders.forEach(fader => appearOnScroll.observe(fader));
-</script>
+  </script>
+
+</body>
+</html>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-12 reveal">
+        <p class="text-rdred font-bold tracking-[0.2em] uppercase text-sm mb-4">Get Started</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Start With a Conversation</h2>
+        <p class="text-gray-400 text-lg">Tell us about your environment. We'll map your current posture and outline a clear path forward. No sales pitch—just honest assessment.</p>
+      </div>
+      
+      <div class="glass-card rounded-2xl p-8 md:p-12 reveal">
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-400">Name</label>
+              <input type="text" name="name" required class="w-full bg-rddark border border-white/10 rounded-lg px-4 py-3 focus:border-rdred focus:outline-none transition" placeholder="Your name">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2 text-gray-400">Email</label>
+              <input type="email" name="email" required class="w-full bg-rddark border border-white/10 rounded-lg px-4 py-3 focus:border-rdred focus:outline-none transition" placeholder="you@company.com">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2 text-gray-400">Company</label>
+            <input type="text" name="company" class="w-full bg-rddark border border-white/10 rounded-lg px-4 py-3 focus:border-rdred focus:outline-none transition" placeholder="Your company (optional)">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2 text-gray-400">How can we help?</label>
+            <textarea name="message" required rows="4" class="w-full bg-rddark border border-white/10 rounded-lg px-4 py-3 focus:border-rdred focus:outline-none transition" placeholder="Describe your current security concerns, compliance needs, or general environment..."></textarea>
+          </div>
+          <button type="submit" class="w-full btn-primary py-4 rounded-lg font-bold text-lg text-white">Send Message</button>
+        </form>
+        
+        <div class="mt-8 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+            <span>hello@renderdefense.com</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-rdred" fill="currentColor" viewBox="0 0 20 20"><path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/></svg>
+            <span>Atlanta, GA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-12 bg-rdgray/30">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-3">
+          <img src="assets/icon.png" alt="Render Defense" class="h-8 w-auto" />
+          <span class="text-lg font-bold tracking-tight"><span class="text-rdred">RENDER</span>DEFENSE</span>
+        </div>
+        <div class="flex items-center gap-8 text-sm text-gray-500">
+          <a href="#services" class="hover:text-white transition">Services</a>
+          <a href="#pricing" class="hover:text-white transition">Pricing</a>
+          <a href="#contact" class="hover:text-white transition">Contact</a>
+        </div>
+        <div class="text-sm text-gray-600">
+          © 2026 Render Defense. Strategy | Governance | Protection
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Scroll reveal animation
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // FAQ toggle
+    function toggleFaq(button) {
+      const item = button.parentElement;
+      const answer = item.querySelector('.faq-answer');
+      const isOpen = item.classList.contains('active');
+      
+      // Close all others
+      document.querySelectorAll('.faq-item').forEach(faq => {
+        faq.classList.remove('active');
+        faq.querySelector('.faq-answer').classList.remove('open');
+      });
+      
+      // Toggle current
+      if (!isOpen) {
+        item.classList.add('active');
+        answer.classList.add('open');
+      }
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
