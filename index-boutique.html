@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Render Defense | Fractional Security Leadership</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --elevated: #1a1a1a;
+            --border: #262626;
+            --crimson: #8B1A1A;
+            --crimson-light: #a82a2a;
+            --text-primary: #fafafa;
+            --text-secondary: #a3a3a3;
+            --text-muted: #737373;
+            --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--crimson);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--crimson);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: var(--crimson-light);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 72px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(40px, 5vw, 64px);
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+        }
+
+        .hero-content h1 em {
+            color: var(--crimson);
+            font-style: normal;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 480px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--crimson);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: var(--crimson-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-secondary);
+            background: var(--surface);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 480px;
+            border-radius: 16px;
+            filter: grayscale(30%);
+        }
+
+        .hero-badge {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            background: var(--elevated);
+            border: 1px solid var(--border);
+            padding: 20px 24px;
+            border-radius: 12px;
+        }
+
+        .hero-badge .label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 4px;
+        }
+
+        .hero-badge .value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 120px 0;
+            background: var(--surface);
+        }
+
+        .problem-header {
+            max-width: 800px;
+            margin-bottom: 80px;
+        }
+
+        .problem-header h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .problem-header p {
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .problem-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 40px 32px;
+            border-radius: 12px;
+        }
+
+        .problem-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .problem-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Approach Section */
+        .approach {
+            padding: 120px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 80px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .approach-card {
+            padding: 48px 32px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .approach-card:hover {
+            border-color: var(--crimson);
+            background: var(--surface);
+        }
+
+        .approach-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--crimson);
+            opacity: 0.3;
+            margin-bottom: 24px;
+        }
+
+        .approach-card h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .approach-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 120px 0;
+            background: var(--surface);
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 600;
+            margin-bottom: 24px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            font-size: 20px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 968px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .problem-grid,
+            .approach-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .hero-image img {
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">Render<span>Defense</span></a>
+            <div class="nav-links">
+                <a href="#approach">Approach</a>
+                <a href="#about">About</a>
+                <a href="#contact" class="nav-cta">Book a Call</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1>Security leadership for the <em>messy middle.</em></h1>
+                    <p class="hero-subtitle">
+                        You've outgrown the "IT guy." You're not ready for a $200K+ CISO. 
+                        Render Defense bridges the gap — Fortune 500 security thinking, 
+                        right-sized for your business.
+                    </p>
+                    <div class="hero-ctas">
+                        <a href="#contact" class="btn-primary">Book Strategy Call</a>
+                        <a href="#approach" class="btn-secondary">See How It Works</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="photo.jpg" alt="Larnel Hight - Render Defense">
+                    <div class="hero-badge">
+                        <div class="label">CISSP-Certified</div>
+                        <div class="value">25+ Years</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="container">
+            <div class="problem-header">
+                <h2>Most security "solutions" aren't built for where you are.</h2>
+                <p>You're stuck between two bad options: reactive break-fix IT, or enterprise tools that don't fit. Neither gives you the strategic leadership you actually need.</p>
+            </div>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h3>The Tool Trap</h3>
+                    <p>Vendors sell you dashboards and alerts. You get noise, not direction. More tools, more complexity, zero strategic progress.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>The MSP Gap</h3>
+                    <p>Your IT provider keeps systems running. But they don't architect security programs, govern risk, or speak boardroom language.</p>
+                </div>
+                <div class="problem-card">
+                    <h3>The Enterprise Overreach</h3>
+                    <p>Big consulting firms want 6-figure retainers for bloated frameworks. You're not a Fortune 500. You need practical, staged execution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section class="approach" id="approach">
+        <div class="container">
+            <div class="section-header">
+                <h2>How Render Defense Works</h2>
+                <p>Not advice you file away. Leadership that drives execution.</p>
+            </div>
+            <div class="approach-grid">
+                <div class="approach-card">
+                    <div class="approach-number">01</div>
+                    <h3>Fractional vCISO</h3>
+                    <p>Executive-level security leadership on a fractional basis. Set direction, prioritize risk, govern the program — without the full-time overhead.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="approach-number">02</div>
+                    <h3>Security Architecture</h3>
+                    <p>Build a right-sized security program around your business reality. Policies, identity strategy, data protection, incident readiness — designed to fit.</p>
+                </div>
+                <div class="approach-card">
+                    <div class="approach-number">03</div>
+                    <h3>Guided Execution</h3>
+                    <p>We don't just design — we guide implementation. Staged, prioritized work that actually lands. Vendor coordination, accountability, and visible progress.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <h2>Let's see if there's a fit.</h2>
+            <p>Currently accepting a limited number of clients. Start with a 30-minute conversation — no pitch, just clarity on where you are and what you actually need.</p>
+            <a href="mailto:hello@renderdefense.com" class="btn-primary">Book Strategy Call</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-left">
+                © 2026 Render Defense. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="#">LinkedIn</a>
+                <a href="mailto:hello@renderdefense.com">Contact</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
