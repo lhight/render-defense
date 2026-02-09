@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Render Defense | Fractional Security Leadership</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0a0a0a;
-            --surface: #141414;
+            --surface: #111111;
             --elevated: #1a1a1a;
-            --border: #262626;
-            --crimson: #8B1A1A;
-            --crimson-light: #a82a2a;
+            --border: #2a2a2a;
+            --steel: #8a8a8a;
+            --steel-light: #b8b8b8;
+            --gold: #c9a962;
+            --gold-light: #d4b978;
             --text-primary: #fafafa;
-            --text-secondary: #a3a3a3;
-            --text-muted: #737373;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
             --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
@@ -59,15 +62,36 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #c9a962 0%, #8a8a8a 50%, #c9a962 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--bg);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text {
             font-size: 18px;
             font-weight: 600;
             letter-spacing: -0.02em;
             color: var(--text-primary);
-            text-decoration: none;
         }
 
-        .logo span {
-            color: var(--crimson);
+        .logo-text span {
+            color: var(--gold);
+            font-weight: 500;
         }
 
         .nav-links {
@@ -88,18 +112,19 @@
         }
 
         .nav-cta {
-            background: var(--crimson);
-            color: white;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--steel) 100%);
+            color: var(--bg);
             padding: 10px 20px;
             border-radius: 6px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .nav-cta:hover {
-            background: var(--crimson-light);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--steel-light) 100%);
+            transform: translateY(-1px);
         }
 
         /* Hero Section */
@@ -128,7 +153,7 @@
         }
 
         .hero-content h1 em {
-            color: var(--crimson);
+            color: var(--gold);
             font-style: normal;
         }
 
@@ -146,19 +171,19 @@
         }
 
         .btn-primary {
-            background: var(--crimson);
-            color: white;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--steel) 100%);
+            color: var(--bg);
             padding: 16px 32px;
             border-radius: 8px;
             font-size: 15px;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
             transition: all 0.2s;
             display: inline-block;
         }
 
         .btn-primary:hover {
-            background: var(--crimson-light);
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--steel-light) 100%);
             transform: translateY(-2px);
         }
 
@@ -212,7 +237,7 @@
         .hero-badge .value {
             font-size: 24px;
             font-weight: 600;
-            color: var(--text-primary);
+            color: var(--gold);
         }
 
         /* Problem Section */
@@ -300,15 +325,15 @@
         }
 
         .approach-card:hover {
-            border-color: var(--crimson);
+            border-color: var(--gold);
             background: var(--surface);
         }
 
         .approach-number {
             font-size: 48px;
             font-weight: 700;
-            color: var(--crimson);
-            opacity: 0.3;
+            color: var(--gold);
+            opacity: 0.4;
             margin-bottom: 24px;
         }
 
@@ -409,7 +434,10 @@
     <!-- Navigation -->
     <nav>
         <div class="container">
-            <a href="#" class="logo">Render<span>Defense</span></a>
+            <a href="#" class="logo">
+                <div class="logo-mark">RD</div>
+                <span class="logo-text">RENDER<span>DEFENSE</span></span>
+            </a>
             <div class="nav-links">
                 <a href="#approach">Approach</a>
                 <a href="#about">About</a>
