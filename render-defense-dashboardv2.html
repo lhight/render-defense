@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Render Defense — Security Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      min-height: 100vh;
+      background: #0a0a0f;
+      background-image: 
+        radial-gradient(ellipse at 20% 20%, rgba(0, 255, 157, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(0, 184, 255, 0.03) 0%, transparent 50%);
+      color: #e6edf3;
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .logo-section { display: flex; align-items: center; gap: 12px; }
+    
+    .logo {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, #00ff9d 0%, #00b8ff 100%);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px; color: #0a0a0f;
+    }
+    
+    .brand-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 16px; letter-spacing: 2px;
+      background: linear-gradient(90deg, #00ff9d, #00b8ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .brand-sub { font-size: 11px; color: #7d8590; }
+    
+    .header-status { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    
+    .system-status {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 12px;
+      background: rgba(0, 255, 157, 0.1);
+      border: 1px solid rgba(0, 255, 157, 0.2);
+      border-radius: 100px; font-size: 12px; font-weight: 500;
+    }
+    
+    .status-pulse { position: relative; display: inline-flex; }
+    
+    .pulse-dot {
+      width: 8px; height: 8px;
+      background: var(--pulse-color, #00ff9d);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--pulse-color, #00ff9d);
+    }
+    
+    .status-pulse::before {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      background: var(--pulse-color, #00ff9d);
+      border-radius: 50%;
+      animation: pulse 2s ease-out infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+    
+    .last-update { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7d8590; }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    
+    .card {
+      background: rgba(22, 27, 34, 0.8);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      border-color: rgba(0, 255, 157, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .card-title {
+      font-size: 11px; font-weight: 600; color: #7d8590;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    
+    .card-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; padding: 3px 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px; color: #7d8590;
+    }
+    
+    .risk-display { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .risk-circle { position: relative; margin-bottom: 12px; }
+    
+    .risk-value {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px; font-weight: 700;
+    }
+    
+    .risk-label { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+    .risk-sublabel { font-size: 11px; color: #7d8590; }
+    
+    .risk-trend {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    
+    .big-number { font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 700; }
+    .label-text { font-size: 12px; color: #7d8590; margin-bottom: 16px; }
+    
+    .bars { display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: flex; align-items: center; gap: 10px; }
+    .bar-label { width: 70px; font-size: 11px; color: #7d8590; }
+    
+    .bar-track {
+      flex: 1; height: 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 3px; overflow: hidden;
+    }
+    
+    .bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease-out; }
+    
+    .bar-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 600;
+      min-width: 24px; text-align: right;
+    }
+    
+    .threat-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    
+    .threat-type {
+      text-align: center; padding: 10px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 6px;
+    }
+    
+    .threat-type-value { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 600; }
+    .threat-type-label { font-size: 10px; color: #7d8590; }
+    
+    .vuln-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    
+    .vuln-item {
+      padding: 12px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 6px; text-align: center;
+    }
+    
+    .vuln-count { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; }
+    .vuln-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    
+    .scan-button {
+      width: 100%; padding: 10px;
+      background: linear-gradient(135deg, rgba(0, 255, 157, 0.1), rgba(0, 184, 255, 0.1));
+      border: 1px solid rgba(0, 255, 157, 0.3);
+      border-radius: 6px; color: #00ff9d;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    
+    .scan-button:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(0, 255, 157, 0.2), rgba(0, 184, 255, 0.2));
+    }
+    
+    .scan-button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .scanning { animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    
+    .timeline-card { grid-column: span 2; }
+    .timeline-tabs { display: flex; gap: 6px; }
+    
+    .timeline-tab {
+      padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px; color: #7d8590;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    
+    .timeline-tab.active {
+      background: rgba(0, 255, 157, 0.1);
+      border-color: rgba(0, 255, 157, 0.3);
+      color: #00ff9d;
+    }
+    
+    .timeline-events {
+      display: flex; flex-direction: column; gap: 10px;
+      max-height: 280px; overflow-y: auto;
+    }
+    
+    .timeline-events::-webkit-scrollbar { width: 4px; }
+    .timeline-events::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
+    .timeline-events::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    
+    .threat-event {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 6px;
+      border-left: 3px solid;
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .threat-icon {
+      font-size: 16px; width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+    }
+    
+    .threat-content { flex: 1; }
+    .threat-header { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+    .threat-title { font-weight: 500; font-size: 12px; }
+    
+    .threat-severity {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; font-weight: 600;
+      padding: 2px 5px; border-radius: 3px;
+    }
+    
+    .threat-detail { font-size: 11px; color: #7d8590; }
+    .threat-time { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7d8590; }
+    
+    .compliance-card { grid-column: span 2; }
+    .compliance-list { display: flex; flex-direction: column; gap: 14px; }
+    .compliance-item { display: flex; align-items: center; gap: 12px; }
+    .compliance-name { width: 100px; font-weight: 500; font-size: 13px; }
+    .compliance-progress { flex: 1; display: flex; align-items: center; gap: 10px; }
+    
+    .compliance-bar {
+      flex: 1; height: 10px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 5px; overflow: hidden;
+    }
+    
+    .compliance-fill { height: 100%; border-radius: 5px; transition: width 0.5s ease-out; }
+    .compliance-value { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; min-width: 40px; }
+    .compliance-remaining { font-size: 11px; color: #7d8590; min-width: 80px; }
+    
+    .network-services { display: flex; flex-direction: column; gap: 10px; }
+    
+    .network-service {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 6px;
+    }
+    
+    .service-info { display: flex; align-items: center; gap: 10px; }
+    .service-name { font-weight: 500; font-size: 13px; }
+    .service-uptime { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #00ff9d; }
+    
+    .mfa-display { display: flex; align-items: center; gap: 20px; }
+    .mfa-circle { position: relative; }
+    
+    .mfa-value {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px; font-weight: 700;
+    }
+    
+    .mfa-stats { display: flex; flex-direction: column; gap: 6px; }
+    .mfa-stat { display: flex; align-items: center; gap: 6px; }
+    .mfa-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .mfa-stat-label { font-size: 12px; color: #7d8590; }
+    .mfa-stat-value { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 13px; }
+    
+    .patching-overall { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: #00ff9d; }
+    .patching-label { font-size: 12px; color: #7d8590; margin-bottom: 16px; }
+    .patching-details { display: flex; flex-direction: column; gap: 10px; }
+    
+    .patch-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 6px;
+    }
+    
+    .patch-type { font-size: 12px; }
+    .patch-ratio { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: #00ff9d; }
+    
+    .notification {
+      position: fixed;
+      top: 20px; right: 20px;
+      padding: 14px 18px;
+      background: rgba(22, 27, 34, 0.95);
+      border: 1px solid;
+      border-radius: 10px;
+      display: none; align-items: center; gap: 10px;
+      animation: slideInRight 0.3s ease-out;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .notification.show { display: flex; }
+    
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(100px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .notification-icon { font-size: 18px; }
+    .notification-content { display: flex; flex-direction: column; gap: 2px; }
+    .notification-title { font-weight: 600; font-size: 13px; }
+    .notification-detail { font-size: 11px; color: #7d8590; }
+    
+    @media (max-width: 1000px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .timeline-card, .compliance-card { grid-column: span 2; }
+    }
+    
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .timeline-card, .compliance-card { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="notification" class="notification">
+    <span id="notification-icon" class="notification-icon"></span>
+    <div class="notification-content">
+      <span id="notification-title" class="notification-title"></span>
+      <span id="notification-detail" class="notification-detail"></span>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="logo-section">
+      <div class="logo">RD</div>
+      <div class="brand">
+        <span class="brand-name">RENDER DEFENSE</span>
+        <div class="brand-sub">Security Dashboard</div>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="system-status">
+        <span class="status-pulse" style="--pulse-color: #00ff9d;"><span class="pulse-dot"></span></span>
+        <span>All Systems Operational</span>
+      </div>
+      <span id="last-update" class="last-update">Updated: --:--:--</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- Risk Score -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Risk Exposure Score</span>
+        <span class="card-badge">↑ 3 pts</span>
+      </div>
+      <div class="risk-display">
+        <div class="risk-circle">
+          <svg id="risk-svg" width="120" height="120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+            <circle id="risk-progress" cx="60" cy="60" r="52" fill="none" stroke="#00ff9d" stroke-width="8"
+              stroke-dasharray="326.73" stroke-dashoffset="71.88" stroke-linecap="round"
+              transform="rotate(-90 60 60)" style="transition: stroke-dashoffset 0.5s ease-out, stroke 0.3s;"/>
+          </svg>
+          <span id="risk-value" class="risk-value" style="color: #00ff9d;">78</span>
+        </div>
+        <span id="risk-label" class="risk-label" style="color: #00ff9d;">Good</span>
+        <span class="risk-sublabel">Above industry avg</span>
+        <div class="risk-trend">
+          <svg id="sparkline" width="100" height="30"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Endpoint Status</span>
+      </div>
+      <div id="endpoint-total" class="big-number">47</div>
+      <div class="label-text">Total Endpoints</div>
+      <div class="bars">
+        <div class="bar-row">
+          <span class="bar-label">Protected</span>
+          <div class="bar-track"><div id="protected-bar" class="bar-fill" style="width: 93.6%; background: #00ff9d;"></div></div>
+          <span id="protected-value" class="bar-value" style="color: #00ff9d;">44</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Warning</span>
+          <div class="bar-track"><div id="warning-bar" class="bar-fill" style="width: 4.3%; background: #ffb800;"></div></div>
+          <span id="warning-value" class="bar-value" style="color: #ffb800;">2</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">At Risk</span>
+          <div class="bar-track"><div id="atrisk-bar" class="bar-fill" style="width: 2.1%; background: #ff3366;"></div></div>
+          <span id="atrisk-value" class="bar-value" style="color: #ff3366;">1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Threats Blocked -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Threats Blocked</span>
+      </div>
+      <div id="threats-total" class="big-number">1,247</div>
+      <div class="label-text">Last 30 days</div>
+      <div class="threat-breakdown">
+        <div class="threat-type">
+          <div id="malware-count" class="threat-type-value" style="color: #ff6b35;">23</div>
+          <div class="threat-type-label">Malware</div>
+        </div>
+        <div class="threat-type">
+          <div id="phishing-count" class="threat-type-value" style="color: #ffb800;">89</div>
+          <div class="threat-type-label">Phishing</div>
+        </div>
+        <div class="threat-type">
+          <div id="suspicious-count" class="threat-type-value" style="color: #00b8ff;">1,135</div>
+          <div class="threat-type-label">Suspicious</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vulnerabilities -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Vulnerabilities</span>
+      </div>
+      <div class="vuln-grid">
+        <div class="vuln-item">
+          <div id="vuln-critical" class="vuln-count" style="color: #ff3366;">0</div>
+          <div class="vuln-label" style="color: #ff3366;">Critical</div>
+        </div>
+        <div class="vuln-item">
+          <div id="vuln-high" class="vuln-count" style="color: #ff6b35;">3</div>
+          <div class="vuln-label" style="color: #ff6b35;">High</div>
+        </div>
+        <div class="vuln-item">
+          <div id="vuln-medium" class="vuln-count" style="color: #ffb800;">12</div>
+          <div class="vuln-label" style="color: #ffb800;">Medium</div>
+        </div>
+        <div class="vuln-item">
+          <div id="vuln-low" class="vuln-count" style="color: #00b8ff;">27</div>
+          <div class="vuln-label" style="color: #00b8ff;">Low</div>
+        </div>
+      </div>
+      <button id="scan-button" class="scan-button">
+        <span>⚡</span> Run Full Scan
+      </button>
+    </div>
+
+    <!-- Threat Timeline -->
+    <div class="card timeline-card">
+      <div class="card-header">
+        <span class="card-title">Threat Timeline</span>
+        <div class="timeline-tabs">
+          <button class="timeline-tab active" data-tab="24h">24h</button>
+          <button class="timeline-tab" data-tab="7d">7d</button>
+          <button class="timeline-tab" data-tab="30d">30d</button>
+        </div>
+      </div>
+      <div id="timeline-events" class="timeline-events"></div>
+    </div>
+
+    <!-- Compliance -->
+    <div class="card compliance-card">
+      <div class="card-header">
+        <span class="card-title">Compliance Health</span>
+        <span class="card-badge">3 frameworks</span>
+      </div>
+      <div class="compliance-list">
+        <div class="compliance-item">
+          <span class="compliance-name">SOC 2 Type II</span>
+          <div class="compliance-progress">
+            <div class="compliance-bar"><div class="compliance-fill" style="width: 87%; background: #ffb800;"></div></div>
+            <span class="compliance-value">87%</span>
+            <span class="compliance-remaining">12 remaining</span>
+          </div>
+        </div>
+        <div class="compliance-item">
+          <span class="compliance-name">HIPAA</span>
+          <div class="compliance-progress">
+            <div class="compliance-bar"><div class="compliance-fill" style="width: 64%; background: #ff6b35;"></div></div>
+            <span class="compliance-value">64%</span>
+            <span class="compliance-remaining">28 remaining</span>
+          </div>
+        </div>
+        <div class="compliance-item">
+          <span class="compliance-name">NIST CSF</span>
+          <div class="compliance-progress">
+            <div class="compliance-bar"><div class="compliance-fill" style="width: 92%; background: #00ff9d;"></div></div>
+            <span class="compliance-value">92%</span>
+            <span class="compliance-remaining">8 remaining</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Network Health -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Network Health</span>
+      </div>
+      <div class="network-services">
+        <div class="network-service">
+          <div class="service-info">
+            <span class="status-pulse" style="--pulse-color: #00ff9d;"><span class="pulse-dot"></span></span>
+            <span class="service-name">Firewall</span>
+          </div>
+          <span class="service-uptime">99.99%</span>
+        </div>
+        <div class="network-service">
+          <div class="service-info">
+            <span class="status-pulse" style="--pulse-color: #00ff9d;"><span class="pulse-dot"></span></span>
+            <span class="service-name">VPN Gateway</span>
+          </div>
+          <span class="service-uptime">99.95%</span>
+        </div>
+        <div class="network-service">
+          <div class="service-info">
+            <span class="status-pulse" style="--pulse-color: #00ff9d;"><span class="pulse-dot"></span></span>
+            <span class="service-name">DNS Filtering</span>
+          </div>
+          <span class="service-uptime">100%</span>
+        </div>
+        <div class="network-service">
+          <div class="service-info">
+            <span class="status-pulse" style="--pulse-color: #00ff9d;"><span class="pulse-dot"></span></span>
+            <span class="service-name">IDS/IPS</span>
+          </div>
+          <span class="service-uptime">99.98%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MFA -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">MFA Adoption</span>
+      </div>
+      <div class="mfa-display">
+        <div class="mfa-circle">
+          <svg width="80" height="80">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6"/>
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#00ff9d" stroke-width="6"
+              stroke-dasharray="213.63" stroke-dashoffset="21.36" stroke-linecap="round"
+              transform="rotate(-90 40 40)"/>
+          </svg>
+          <span class="mfa-value">90%</span>
+        </div>
+        <div class="mfa-stats">
+          <div class="mfa-stat">
+            <span class="mfa-dot" style="background: #00ff9d;"></span>
+            <span class="mfa-stat-label">Enabled</span>
+            <span class="mfa-stat-value" style="color: #00ff9d;">27</span>
+          </div>
+          <div class="mfa-stat">
+            <span class="mfa-dot" style="background: #ff3366;"></span>
+            <span class="mfa-stat-label">Disabled</span>
+            <span class="mfa-stat-value" style="color: #ff3366;">3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patching -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Patching Radar</span>
+      </div>
+      <div class="patching-overall">98%</div>
+      <div class="patching-label">Current Coverage</div>
+      <div class="patching-details">
+        <div class="patch-item">
+          <span class="patch-type">OS Patches</span>
+          <span class="patch-ratio">46/47</span>
+        </div>
+        <div class="patch-item">
+          <span class="patch-type">App Patches</span>
+          <span class="patch-ratio">45/47</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let riskScore = 78;
+    let riskHistory = [75, 77, 74, 78, 76, 79, 78];
+    let endpoints = { total: 47, protected: 44, warning: 2, atRisk: 1 };
+    let threatsBlocked = { total: 1247, malware: 23, phishing: 89, suspicious: 1135 };
+    let vulnerabilities = { critical: 0, high: 3, medium: 12, low: 27 };
+    let threats = [];
+    let isScanning = false;
+
+    const threatTypes = [
+      { type: 'Ransomware attempt blocked', severity: 'CRITICAL', icon: '🛡️' },
+      { type: 'Phishing email blocked', severity: 'HIGH', icon: '🎣' },
+      { type: 'Suspicious login attempt', severity: 'MEDIUM', icon: '🔐' },
+      { type: 'Malware quarantined', severity: 'HIGH', icon: '🦠' },
+      { type: 'DDoS attack mitigated', severity: 'CRITICAL', icon: '🌊' },
+      { type: 'Credential stuffing blocked', severity: 'HIGH', icon: '🔑' },
+      { type: 'Port scan detected', severity: 'LOW', icon: '📡' },
+      { type: 'C2 communication blocked', severity: 'CRITICAL', icon: '📡' },
+      { type: 'SQL injection attempt blocked', severity: 'HIGH', icon: '💉' },
+      { type: 'Unauthorized access attempt', severity: 'MEDIUM', icon: '🚫' }
+    ];
+
+    const users = ['j.martinez', 'a.smith', 's.johnson', 'r.williams', 'm.brown', 'k.davis'];
+    const endpointNames = ['DESKTOP-MKT-04', 'LAPTOP-ENG-12', 'SERVER-DB-01', 'WORKSTATION-HR-07'];
+
+    const severityColors = {
+      CRITICAL: '#ff3366',
+      HIGH: '#ff6b35',
+      MEDIUM: '#ffb800',
+      LOW: '#00b8ff',
+      INFO: '#00ff9d'
+    };
+
+    function getRiskColor(score) {
+      if (score >= 80) return '#00ff9d';
+      if (score >= 60) return '#ffb800';
+      return '#ff3366';
+    }
+
+    function generateThreatEvent() {
+      const threat = threatTypes[Math.floor(Math.random() * threatTypes.length)];
+      const user = users[Math.floor(Math.random() * users.length)];
+      const endpoint = endpointNames[Math.floor(Math.random() * endpointNames.length)];
+      const minutesAgo = Math.floor(Math.random() * 60);
+      
+      let detail = '';
+      if (threat.type.includes('email') || threat.type.includes('login') || threat.type.includes('Credential') || threat.type.includes('Unauthorized')) {
+        detail = `User: ${user}@company.com`;
+      } else {
+        detail = `Endpoint: ${endpoint}`;
+      }
+      
+      return {
+        id: Date.now() + Math.random(),
+        ...threat,
+        detail,
+        time: minutesAgo === 0 ? 'Just now' : `${minutesAgo}m ago`
+      };
+    }
+
+    function renderThreatEvent(threat) {
+      const color = severityColors[threat.severity];
+      return `
+        <div class="threat-event" style="border-color: ${color};">
+          <span class="threat-icon">${threat.icon}</span>
+          <div class="threat-content">
+            <div class="threat-header">
+              <span class="threat-title">${threat.type}</span>
+              <span class="threat-severity" style="background: ${color}20; color: ${color};">${threat.severity}</span>
+            </div>
+            <div class="threat-detail">${threat.detail}</div>
+          </div>
+          <span class="threat-time">${threat.time}</span>
+        </div>
+      `;
+    }
+
+    function updateTimeline() {
+      const container = document.getElementById('timeline-events');
+      container.innerHTML = threats.map(renderThreatEvent).join('');
+    }
+
+    function updateSparkline() {
+      const svg = document.getElementById('sparkline');
+      const width = 100, height = 30;
+      const max = Math.max(...riskHistory);
+      const min = Math.min(...riskHistory);
+      const range = max - min || 1;
+      
+      const points = riskHistory.map((val, i) => {
+        const x = (i / (riskHistory.length - 1)) * width;
+        const y = height - ((val - min) / range) * height;
+        return `${x},${y}`;
+      }).join(' ');
+      
+      svg.innerHTML = `<polyline points="${points}" fill="none" stroke="${getRiskColor(riskScore)}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    }
+
+    function updateRiskScore() {
+      const color = getRiskColor(riskScore);
+      const circumference = 2 * Math.PI * 52;
+      const offset = circumference - (riskScore / 100) * circumference;
+      
+      document.getElementById('risk-value').textContent = riskScore;
+      document.getElementById('risk-value').style.color = color;
+      document.getElementById('risk-label').textContent = riskScore >= 80 ? 'Good' : riskScore >= 60 ? 'Fair' : 'At Risk';
+      document.getElementById('risk-label').style.color = color;
+      document.getElementById('risk-progress').setAttribute('stroke-dashoffset', offset);
+      document.getElementById('risk-progress').setAttribute('stroke', color);
+      
+      updateSparkline();
+    }
+
+    function updateEndpoints() {
+      document.getElementById('endpoint-total').textContent = endpoints.total;
+      document.getElementById('protected-value').textContent = endpoints.protected;
+      document.getElementById('warning-value').textContent = endpoints.warning;
+      document.getElementById('atrisk-value').textContent = endpoints.atRisk;
+      
+      document.getElementById('protected-bar').style.width = `${(endpoints.protected / endpoints.total) * 100}%`;
+      document.getElementById('warning-bar').style.width = `${(endpoints.warning / endpoints.total) * 100}%`;
+      document.getElementById('atrisk-bar').style.width = `${(endpoints.atRisk / endpoints.total) * 100}%`;
+    }
+
+    function updateThreatsBlocked() {
+      document.getElementById('threats-total').textContent = threatsBlocked.total.toLocaleString();
+      document.getElementById('malware-count').textContent = threatsBlocked.malware;
+      document.getElementById('phishing-count').textContent = threatsBlocked.phishing;
+      document.getElementById('suspicious-count').textContent = threatsBlocked.suspicious.toLocaleString();
+    }
+
+    function updateVulnerabilities() {
+      document.getElementById('vuln-critical').textContent = vulnerabilities.critical;
+      document.getElementById('vuln-high').textContent = vulnerabilities.high;
+      document.getElementById('vuln-medium').textContent = vulnerabilities.medium;
+      document.getElementById('vuln-low').textContent = vulnerabilities.low;
+    }
+
+    function showNotification(threat) {
+      const notification = document.getElementById('notification');
+      const color = severityColors[threat.severity];
+      
+      document.getElementById('notification-icon').textContent = threat.icon;
+      document.getElementById('notification-title').textContent = threat.type;
+      document.getElementById('notification-detail').textContent = threat.detail;
+      notification.style.borderColor = color;
+      notification.classList.add('show');
+      
+      setTimeout(() => notification.classList.remove('show'), 4000);
+    }
+
+    function runScan() {
+      if (isScanning) return;
+      isScanning = true;
+      
+      const btn = document.getElementById('scan-button');
+      btn.innerHTML = '<span class="scanning">⟳</span> Scanning...';
+      btn.disabled = true;
+      
+      setTimeout(() => {
+        vulnerabilities = {
+          critical: Math.floor(Math.random() * 2),
+          high: 2 + Math.floor(Math.random() * 4),
+          medium: 10 + Math.floor(Math.random() * 6),
+          low: 25 + Math.floor(Math.random() * 10)
+        };
+        updateVulnerabilities();
+        
+        btn.innerHTML = '<span>⚡</span> Run Full Scan';
+        btn.disabled = false;
+        isScanning = false;
+        
+        showNotification({ type: 'Scan complete', severity: 'INFO', icon: '✓', detail: 'Full system scan finished' });
+      }, 3000);
+    }
+
+    // Initialize
+    for (let i = 0; i < 8; i++) {
+      threats.push(generateThreatEvent());
+    }
+    updateTimeline();
+    updateSparkline();
+
+    // Event listeners
+    document.getElementById('scan-button').addEventListener('click', runScan);
+
+    document.querySelectorAll('.timeline-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.timeline-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    // Real-time updates
+    setInterval(() => {
+      // Update timestamp
+      document.getElementById('last-update').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+      
+      // Occasionally update risk score
+      if (Math.random() > 0.7) {
+        const variance = Math.floor(Math.random() * 10) - 5;
+        riskScore = Math.max(50, Math.min(95, riskScore + variance));
+        riskHistory = [...riskHistory.slice(-6), riskScore];
+        updateRiskScore();
+      }
+      
+      // Occasionally update endpoints
+      if (Math.random() > 0.8) {
+        const atRisk = Math.floor(Math.random() * 3);
+        const warning = Math.floor(Math.random() * 4);
+        endpoints = { total: 47, protected: 47 - atRisk - warning, warning, atRisk };
+        updateEndpoints();
+      }
+      
+      // Add new threat
+      if (Math.random() > 0.6) {
+        const newThreat = generateThreatEvent();
+        newThreat.time = 'Just now';
+        threats = [newThreat, ...threats.slice(0, 7)];
+        updateTimeline();
+        
+        if (newThreat.severity === 'CRITICAL' || newThreat.severity === 'HIGH') {
+          showNotification(newThreat);
+        }
+      }
+      
+      // Update threats blocked
+      if (Math.random() > 0.5) {
+        threatsBlocked.total += Math.floor(Math.random() * 3);
+        threatsBlocked.suspicious += Math.floor(Math.random() * 2);
+        updateThreatsBlocked();
+      }
+    }, 3000);
+  </script>
+</body>
+</html>
